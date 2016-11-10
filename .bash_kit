@@ -1,7 +1,8 @@
 # macos terminal config
-export PS1="\[\033[38;5;87m\]\w\[\033[m\] \$ "
-export CLICOLOR=1
-export LSCOLORS=ExFxBxDxCxegedabagacad
+#export PS1="\[\033[38;5;87m\]\w\[\033[m\] \$ "
+#export CLICOLOR=1
+#export LSCOLORS=ExFxBxDxCxegedabagacad
+export EDITOR=nvim ranger
 
 # aliases
 alias ..="cd .."
@@ -13,6 +14,9 @@ alias rm="rm -rf"
 alias tmux="tmux -2"
 alias grep="grep --color"
 alias g="git"
+alias vim="nvim"
+alias ffind="ag -g"
+alias mount="sudo mount"
 
 # brew
 export HOMEBREW_CASK_OPTS="--appdir=/Applications"
@@ -30,18 +34,56 @@ export LC_MESSAGES="en_US.UTF-8"
 export LC_MONETARY="en_US.UTF-8"
 export LC_NUMERIC="en_US.UTF-8"
 export LC_TIME="en_US.UTF-8"
-export LC_ALL=
+export LC_ALL="en_US.UTF-8"
 
 # vim binding
 set -o vi
 
 # history config
-export HISTTIMEFORMAT="[%F %T] "
-export HISTFILESIZE=
-export HISTSIZE=
+#export HISTTIMEFORMAT="[%F %T] "
+#export HISTFILESIZE=
+#export HISTSIZE=
 
 # # tmux, auto launch the instance
 # # @deprecated, switching to terminal in neovim
 # if [[ ! $TERM =~ screen  ]]; then
 #     exec tmux new-session -A -s world
+# fi
+#
+
+# Functional alias
+docker-ip() {
+  docker inspect --format '{{ .NetworkSettings.IPAddress }}' "$@"
+}
+hosts() {
+  sudo vim /etc/hosts
+}
+craftego() {
+  cd /srv/http/craftego/wp-content/themes/craftego
+}
+thememove() {
+  cd /srv/http/thememove/wp-content/themes
+}
+
+
+# SSH AGENT
+SSH_ENV="$HOME/.ssh/environment"
+
+# function start_agent {
+#   echo "Initialising new SSH agent..."
+#   /usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
+#   echo succeeded
+#   chmod 600 "${SSH_ENV}"
+#   . "${SSH_ENV}" > /dev/null
+#   /usr/bin/ssh-add
+#   /usr/bin/ssh-add /home/mihnsen/.ssh/minhnd;
+# }
+# if [ -f "${SSH_ENV}" ]; then
+#   . "${SSH_ENV}" > /dev/null
+#   #ps ${SSH_AGENT_PID} doesn't work under cywgin
+#   ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
+#     start_agent;
+#   }
+# else
+#   start_agent;
 # fi

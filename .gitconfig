@@ -1,8 +1,7 @@
 [user]
   # to be customized
-  email = minhnd.it@gmail.com
-  name = soyelmnd
-  signingkey = D3A8119A
+  email = minhnt.hut@gmail.com
+  name = mihnsen
 
 [alias]
   a = add
@@ -21,6 +20,7 @@
   s = status -sb -unormal
   v = log --graph --all --format=\"%C(auto)%h%C(reset) %C(auto)%d%C(reset) %s %C(yellow)- %an, %ad%C(reset) %C(dim green)%G?%C(reset)\" --date=relative
   vv = log --graph --all --format=\"%C(auto)%h%C(reset) %C(auto)%d%C(reset) %s %C(dim cyan)- %an, %ad%C(reset)%n         %C(dim)author  :%C(reset) %C(yellow)%aN <%aE>.%C(reset) %C(cyan)%aD%C(reset)%n         %C(dim)commiter:%C(reset) %C(yellow)%cN <%cE>.%C(reset) %C(cyan)%cD%C(reset)%n         %C(dim)signing :%C(reset) %C(bold green)%G?.%C(reset) %C(yellow)%GS%C(reset) %C(dim cyan)%GK%C(reset)\" --date=relative
+  find = log --pretty=\"format:%Cgreen%H %Cblue%s\" --name-status --grep
 
 [core]
   editor = vim

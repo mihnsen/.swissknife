@@ -44,11 +44,11 @@ fi
 
 # bash config
 echo -e "\n\033[32mConfiguring bash\033[m";
-touch $HOME/.bash_profile
-if grep -Fxq ".bash_kit" $HOME/.bash_profile; then
+touch $HOME/.bashrc
+if grep -Fxq ".bash_kit" $HOME/.bashrc; then
   echo ".bash_kit already included"
 else
   ln -sf $DIR/.bash_kit $HOME/;
-  echo source \$HOME/.bash_kit >> $HOME/.bash_profile
+  echo source \$HOME/.bash_kit >> $HOME/.bashrc
 fi
 touch ~/.hushlogin

@@ -1,63 +1,84 @@
-" Dependencies
-"   https://github.com/VundleVim/Vundle.vim
-"   https://github.com/powerline/fonts
-
-
-"-------------------------------- GENERAL -------------------------------------"
-
-
+" Dependencies https://github.com/powerline/fonts
 set nocompatible
 filetype off
 
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+call plug#begin('~/.vim/bundle')
 
-Plugin 'gmarik/Vundle.vim'
+Plug 'ap/vim-css-color'
+Plug 'digitaltoad/vim-pug'
+"Plug 'easymotion/vim-easymotion'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'groenewege/vim-less'
+Plug 'itchyny/lightline.vim'
+Plug 'jiangmiao/auto-pairs'
+Plug 'ctrlpvim/ctrlp.vim'
+"Plug 'mattn/emmet-vim'
+"Plug 'pangloss/vim-javascript'
+Plug 'godlygeek/tabular'
+Plug 'scrooloose/nerdtree'
+Plug 'tmhedberg/matchit'
+Plug 'tommcdo/vim-exchange'
+Plug 'tpope/vim-haml'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-surround'
+"Plug 'Yggdroot/indentLine'
+Plug 'mileszs/ack.vim'
+Plug 'scrooloose/nerdcommenter'
+"Plug 'janko-m/vim-test'
+Plug 'yssl/QFEnter'
+Plug 'ervandew/supertab'
+Plug 'airblade/vim-gitgutter'
 
-Plugin 'ap/vim-css-color'
-Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'digitaltoad/vim-jade'
-Plugin 'easymotion/vim-easymotion'
-Plugin 'editorconfig/editorconfig-vim'
-Plugin 'godlygeek/tabular'
-Plugin 'groenewege/vim-less'
-Plugin 'itchyny/lightline.vim'
-Plugin 'jiangmiao/auto-pairs'
-Plugin 'mattn/emmet-vim'
-Plugin 'pangloss/vim-javascript'
-Plugin 'scrooloose/nerdtree'
-Plugin 'tmhedberg/matchit'
-Plugin 'tommcdo/vim-exchange'
-Plugin 'tpope/vim-haml'
-Plugin 'tpope/vim-repeat'
-Plugin 'tpope/vim-surround'
-Plugin 'Yggdroot/indentLine'
+"Plug 'Valloric/YouCompleteMe', { 'do': 'python2.7 install.py --tern-completer' }
 
+function! YCMInstall(info)
+  if a:info.status == 'installed'
+    !./install.sh --tern-completer
+  endif
+endfunction
+Plug 'Valloric/YouCompleteMe', { 'on': [], 'do': function('YCMInstall') }
+let g:ycm_confirm_extra_conf    = 0
+let g:ycm_extra_conf_vim_data   = ['&filetype']
+let g:ycm_seed_identifiers_with_syntax = 1
+let g:ycm_enable_diagnostic_signs = 0
+augroup load_ycm
+  autocmd!
+  autocmd! InsertEnter *
+        \ call plug#load('YouCompleteMe')     |
+        \ if exists('g:loaded_youcompleteme') |
+        \   call youcompleteme#Enable()       |
+        \ endif                               |
+        \ autocmd! load_ycm
+augroup END
 
-call vundle#end()
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+"Plug 'kbarrette/mediummode'
+
+call plug#end()
 
 " basic
 filetype plugin indent on
 syntax on
+set ttyfast
 set lazyredraw
+
+" change leader key
+let mapleader=","
 
 " theme and color
 set t_Co=256
 set background=dark
-colorscheme elflord
+colorscheme koehler
 
-" numbering, rulers and highlight
+" numbering and rulers
 set relativenumber
 set number
-set nocursorline
-set nocursorcolumn
+set cursorline
+set colorcolumn=81
 highlight CursorColumn ctermbg=8
-highlight ColorColumn ctermbg=7
-highlight Visual ctermbg=255 ctermfg=16
-
-" horizontal limit (ie. colored border, text width)
-" TODO toggle textwidth
-set colorcolumn=81 " make this 81, shouldn't hit it
+highlight ColorColumn ctermbg=8
+" highlight Visual ctermbg=255 ctermfg=16
 
 " fix normal keys, and lock mouse
 set backspace=indent,eol,start
@@ -71,6 +92,12 @@ set splitright
 set pastetoggle=<leader>p
 nnoremap ; :
 vnoremap ; :
+"noremap h <NOP>
+"noremap j <NOP>
+"noremap k <NOP>
+"noremap l <NOP>
+noremap <BS> <NOP>
+set backspace=0
 nnoremap <C-j> gj
 nnoremap <C-k> gk
 nnoremap <C-^> g^
@@ -78,6 +105,18 @@ nnoremap <C-$> g$
 nnoremap <C-0> g0
 nnoremap <BAR> :set cursorcolumn!<BAR>set cursorline!<CR>
 noremap / /\v
+vnoremap # y/<C-R>"<CR>"
+" Full tab edit
+nmap t% :tabedit %<CR>
+nmap td :tabclose<CR>
+
+" Alt key to esc
+imap <M-[> <Esc>
+imap jj <Esc>
+
+" check one time after 4s of inactivity in normal mode
+set autoread
+au CursorHold * checktime
 
 if bufwinnr(1)
   " pane resize vertically = -
@@ -88,7 +127,7 @@ if bufwinnr(1)
   map _ 5<c-w>-
 endif
 
-" tab stops defaults and modeline
+" tab stops
 set tabstop=2
 set softtabstop=2
 set shiftwidth=2
@@ -156,16 +195,8 @@ endif
 
 
 "--------------------------------- PLUGIN -------------------------------------"
-
-
-" emmet
-" @link https://github.com/mattn/emmet-vim
-"   tab to expand
-imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
-
-
-" exchange
-" @link https://github.com/tommcdo/vim-exchange
+" Exchange
+" @see https://github.com/tommcdo/vim-exchange
 let g:exchange_no_mappings=1
 nmap cx <Plug>(Exchange)
 vmap X <Plug>(Exchange)
@@ -173,33 +204,113 @@ nmap cxc <Plug>(ExchangeClear)
 nmap cxx <Plug>(ExchangeLine)
 
 
-" ctrlp
-" @link https://github.com/ctrlpvim/ctrlp.vim
+" Ctrlp
+" @see https://github.com/ctrlpvim/ctrlp.vim
 let g:ctrlp_max_files = 0
 let g:ctrlp_working_path_mode = 0
+let g:ctrlp_show_hidden = 1
 set wildignore+=*/vendors/**
+set wildignore+=*/vendor/**
 set wildignore+=*/node_modules/**
 set wildignore+=*/bower_components/**
+set wildignore+=*/.git/**
+set wildignore+=*/.svn/**
+set wildignore+=*/storage/**
 
-" gundo
-" @link https://github.com/sjl/gundo.vim
-" let g:gundo_right=1
-" let g:gundo_close_on_revert = 1
-" let g:gundo_preview_height=25
-" nnoremap <leader>u :GundoToggle<cr>
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Wild settings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem
+set wildignore+=*.psd,*.png,*.jpg,*.gif,*.jpeg
+set wildignore+=*.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz
+set wildignore+=*/vendor/gems/*,*/vendor/cache/*,*/.bundle/*,*/.sass-cache/*
+set wildignore+=*.swp,*~,._*
+set wildignore+=*.min.js
+set wildignore+=*.pot,*.po,*.mo
+set wildignore+=*.eot,*.eol,*.ttf,*.otf,*.afm,*.ffil,*.fon,*.pfm,*.pfb,*.woff,*.svg,*.std,*.pro,*.xsf
+set wildignore+=*/kirki/*
 
+
+" Nerdtree
+" @see https://github.com/scrooloose/nerdtree
+"   Ctrl + O to toggle
+"   and show-on folder open
+"
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+map <C-o> :NERDTreeToggle<CR>
+" Binding to like CtrlP
+let g:NERDTreeMapOpenSplit = '<C-x>'
+let g:NERDTreeMapOpenVSplit = '<C-v>'
+let NERDTreeShowLineNumbers=1
+autocmd FileType nerdtree setlocal relativenumber
+
+let NERDTreeIgnore = ['\.pyc$', '\.png$', '\.jpg$', 'vendor', 'vendors', 'bower_components', 'node_modules']
+" hide on startup
+function! StartUp()
+  if 0 == argc()
+    NERDTreeClose
+  end
+endfunction
+
+autocmd VimEnter * call StartUp()
+
+
+"--------------------------------- EXTRA -------------------------------------"
+
+
+" Ultisnips
+" let g:UltiSnipsExpandTrigger="<c-k>"
+" let g:UltiSnipsJumpForwardTrigger="<c-b>"
+" let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+" The Silver Searcher
+if executable('ag')
+ " Use ag over grep
+ set grepprg=ag\ --nogroup\ --nocolor
+
+ " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+ let g:ctrlp_user_command = 'ag %s -l --nocolor -g "" --ignore={*.psd,*.jpg,*.png,*.jpeg,*.gif,*.eot,*.eol,*.ttf,*.otf,*.afm,*.ffil,*.fon,*.pfm,*.pfb,*.woff,*.svg,*.std,*.pro,*.xsf,*.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz}'
+
+ " ag is fast enough that CtrlP doesn't need to cache
+ let g:ctrlp_use_caching = 0
+endif
+let g:ackprg = 'ag --nogroup --nocolor --column'
+cnoreabbrev Ack Ack!
+noremap <C-s> :Ack! <cword><cr>
+noremap <C-a> :Ack!<space>
+
+" Disable Ack mapping to use QFEnter
+let g:ack_apply_qmappings = 0
+let g:ack_apply_lmappings = 0
+
+" QF Enter
+" like CtrlP
+let g:qfenter_vopen_map = ['<C-v>']
+let g:qfenter_hopen_map = ['<C-CR>', '<C-s>', '<C-x>']
+let g:qfenter_topen_map = ['<C-t>']
+
+" Tabular
+noremap <C-t> :Tab /
+
+" Vim indent
+" autocmd BufRead,BufNewFile * IndentGuidesEnable
+" let g:indent_guides_start_level= 2
+" let g:indent_guides_guide_size = 1
+" hi IndentGuidesEven ctermbg=darkgrey
 
 " indent line
 " @link https://github.com/Yggdroot/indentLine
 let g:indentLine_color_term = 239
 let g:indentLine_char = '┆'
+" let g:indentLine_faster = 1
 
 
-" light line
-" @link https://github.com/itchyny/lightline.vim
+" Light line
+" @see https://github.com/itchyny/lightline.vim
 set laststatus=2
 let g:lightline = {
-\ 'colorscheme': 'wombat',
+\ 'colorscheme': 'PaperColor_dark',
 \ 'active': {
 \   'left': [
 \     [ 'mode', 'paste' ],
@@ -216,8 +327,8 @@ let g:lightline = {
 \   'modified': 'LightlineModified',
 \   'filename': 'LightlineFilename'
 \ },
-\ 'separator': { 'left': '', 'right': ''  },
-\ 'subseparator': { 'left': '', 'right': ''  }
+\ 'separator': { 'left': '', 'right': ''  },
+\ 'subseparator': { 'left': '\ue0b1', 'right': '\ue0b3'  }
 \ }
 
 function! LightlineModified()
@@ -248,18 +359,95 @@ function! LightlineFilename()
   \ ('' != LightlineModified() ? ' ' . LightlineModified() : '')
 endfunction
 
+" Jade
+autocmd BufRead,BufNewFile *.jade setlocal ft=pug
 
-" nerdtree
-" @link https://github.com/scrooloose/nerdtree
-"   Ctrl + N to toggle
-"   and show-on folder open
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-map <C-n> :NERDTreeToggle<CR>
+" Easymotion
+map m <Plug>(easymotion-prefix)
+map ml <Plug>(easymotion-lineforward)
+map mj <Plug>(easymotion-j)
+map mk <Plug>(easymotion-k)
+map mh <Plug>(easymotion-linebackward)
+let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
 
 
-"--------------------------------- EXTRA -------------------------------------"
+" make YCM compatible with UltiSnips (using supertab)
+" better key bindings for UltiSnipsExpandTrigger
+let g:UltiSnipsExpandTrigger           = "<C-e>"
+let g:UltiSnipsJumpForwardTrigger      = "<C-j>"
+let g:UltiSnipsJumpBackwardTrigger     = "<C-k>"
+
+let g:ycm_key_list_select_completion   = ['<C-n>', '<C-j>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<C-k>', '<Up>']
+
+let g:SuperTabDefaultCompletionType    = '<C-n>'
+let g:SuperTabCrMapping                = 0
 
 
-" load local vimrc, if any
-silent! source ~/.vimrc.local
+" Additional YouCompleteMe config.
+let g:ycm_dont_warn_on_startup = 0
+let g:ycm_complete_in_comments = 1
+let g:ycm_complete_in_strings = 1
+let g:ycm_collect_identifiers_from_comments_and_strings = 1
+let g:ycm_collect_identifiers_from_comments_and_strings = 1
+let g:ycm_seed_identifiers_with_syntax = 1
+" Disable unhelpful semantic completions.
+let g:ycm_filetype_specific_completion_to_disable = {
+      \   'c': 1,
+      \   'gitcommit': 1,
+      \   'haskell': 1,
+      \   'ruby': 1
+      \ }
+" Same as default, but with "markdown" and "text" removed.
+let g:ycm_filetype_blacklist = {
+      \   'notes': 1,
+      \   'unite': 1,
+      \   'tagbar': 1,
+      \   'pandoc': 1,
+      \   'qf': 1,
+      \   'vimwiki': 1,
+      \   'infolog': 1,
+      \   'mail': 1
+      \ }
+
+" Additional UltiSnips config.
+let g:UltiSnipsListSnippets = "<C-l>"
+let g:UltiSnipsSnippetsDir  = '~/.vim/bundle/vim-snippets/UltiSnips'
+let g:UltiSnipsEditSplit    = 'vertical'
+nnoremap <leader>ue :UltiSnipsEdit<space>
+
+autocmd FileType javascript UltiSnipsAddFiletypes javascript-jasmine
+autocmd FileType javascript UltiSnipsAddFiletypes javascript-angular
+autocmd FileType javascript UltiSnipsAddFiletypes javascript-jsdoc
+autocmd FileType javascript UltiSnipsAddFiletypes javascript-ember
+autocmd FileType javascript UltiSnipsAddFiletypes javascript-node
+autocmd FileType javascript UltiSnipsAddFiletypes javascript-mocha
+autocmd FileType php UltiSnipsAddFiletypes html
+autocmd FileType php UltiSnipsAddFiletypes html_minimal
+
+" UltiSnips completion function that tries to expand a snippet.
+" @see https://github.com/Valloric/YouCompleteMe/issues/420
+    function! g:JInYCM()
+        if pumvisible()
+            return "\<C-n>"
+        else
+            return "\<c-j>"
+    endfunction
+    
+    function! g:KInYCM()
+        if pumvisible()
+            return "\<C-p>"
+        else
+            return "\<c-k>"
+    endfunction
+    
+    inoremap <c-j> <c-r>=g:JInYCM()<cr>
+    au BufEnter,BufRead * exec "inoremap <silent> " . g:UltiSnipsJumpBackwordTrigger . " <C-R>=g:KInYCM()<cr>"
+    let g:UltiSnipsJumpBackwordTrigger = "<c-k>"
+
+" Gitgutter
+let g:gitgutter_sign_column_always = 1
+
+
+" Load local vimrc, if any
+silent! source ~/.vimrc.local'tpope/�

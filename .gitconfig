@@ -10,7 +10,8 @@
   c = commit -m
   co = checkout
   cp = cherry-pick
-  d = diff
+  d = !"d() { git diff --patch-with-stat $1 $2 || git diff --patch-with-stat $1 || git diff --patch-with-stat; }; git diff-index --quiet HEAD -- || clear; d"
+  dc = !"d() { git diff --cached --patch-with-stat $1 || git diff --cached --patch-with-stat; }; git diff-index --quiet HEAD -- || clear; d"
   f = fetch -p
   l = log --oneline
   m = merge
@@ -20,7 +21,8 @@
   s = status -sb -unormal
   v = log --graph --all --format=\"%C(auto)%h%C(reset) %C(auto)%d%C(reset) %s %C(yellow)- %an, %ad%C(reset) %C(dim green)%G?%C(reset)\" --date=relative
   vv = log --graph --all --format=\"%C(auto)%h%C(reset) %C(auto)%d%C(reset) %s %C(dim cyan)- %an, %ad%C(reset)%n         %C(dim)author  :%C(reset) %C(yellow)%aN <%aE>.%C(reset) %C(cyan)%aD%C(reset)%n         %C(dim)commiter:%C(reset) %C(yellow)%cN <%cE>.%C(reset) %C(cyan)%cD%C(reset)%n         %C(dim)signing :%C(reset) %C(bold green)%G?.%C(reset) %C(yellow)%GS%C(reset) %C(dim cyan)%GK%C(reset)\" --date=relative
-  find = log --pretty=\"format:%Cgreen%H %Cblue%s\" --name-status --grep
+  fc = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short -S$1; }; f"
+  fm = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short --grep=$1; }; f"
 
 [core]
   editor = vim

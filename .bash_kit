@@ -23,7 +23,7 @@ export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 
 # python & virtualenv
 # require virtualenvwrapper
-export PATH=/usr/local/share/python:$PATH
+export PATH=/opt/android-sdk/tools:/opt/android-sdk/platform-tools:~/.npm-global/bin:/usr/local/share/python:$PATH
 export WORKON_HOME=$HOME/.virtualenvs
 alias venv=". /usr/local/bin/virtualenvwrapper.sh && workon \"$1\""
 
@@ -63,6 +63,33 @@ craftego() {
 }
 thememove() {
   cd /srv/http/thememove/wp-content/themes
+}
+plugin() {
+  cd /srv/http/hego/wp-content/plugins/tl-knowledge-base
+}
+kit() {
+  cd /srv/http/vckit/wp-content/plugins/visual-composer-kit
+}
+grid() {
+  cd /srv/http/vckit/wp-content/plugins/post-grid
+}
+marve() {
+  cd /srv/http/marveloushover/wp-content/plugins/vc-marvelous-hover
+}
+kittheme() {
+  cd /srv/http/craftego/wp-content/themes/vckit
+}
+icon() {
+  cd /srv/http/craftego/wp-content/plugins/vc-elegant-icon-box
+}
+hover() {
+  cd /srv/http/craftego/wp-content/plugins/vc-marvelous-hover
+}
+minion() {
+  cd ~/work/ownego/data-minion/website
+}
+hego() {
+  cd /srv/http/hego/wp-content/themes/hego
 }
 
 

@@ -17,6 +17,13 @@ alias g="git"
 alias vim="nvim"
 alias ffind="ag -g"
 alias mount="sudo mount"
+alias bi="bundle install"
+
+# YAOURT ALIASES {{{
+  alias yaoupg='yaourt -Syu --aur --no-confirm'
+  alias yaoin='yaourt -S'
+  alias yaoun='yaourt -Rsn'
+#}}}
 
 # brew
 export HOMEBREW_CASK_OPTS="--appdir=/Applications"
@@ -24,6 +31,7 @@ export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 # python & virtualenv
 # require virtualenvwrapper
 export PATH=/opt/android-sdk/tools:/opt/android-sdk/platform-tools:~/.npm-global/bin:/usr/local/share/python:$PATH
+export PATH=$PATH:$HOME/.config/composer/vendor/bin
 export WORKON_HOME=$HOME/.virtualenvs
 alias venv=". /usr/local/bin/virtualenvwrapper.sh && workon \"$1\""
 
@@ -64,26 +72,23 @@ craftego() {
 thememove() {
   cd /srv/http/thememove/wp-content/themes
 }
-plugin() {
-  cd /srv/http/hego/wp-content/plugins/tl-knowledge-base
-}
 kit() {
   cd /srv/http/vckit/wp-content/plugins/visual-composer-kit
 }
 grid() {
-  cd /srv/http/vckit/wp-content/plugins/post-grid
+  cd /srv/http/vckit/wp-content/plugins/vc-advanced-grids
+}
+qikify() {
+  cd /srv/http/qikify
 }
 marve() {
   cd /srv/http/marveloushover/wp-content/plugins/vc-marvelous-hover
 }
 kittheme() {
-  cd /srv/http/craftego/wp-content/themes/vckit
+  cd /srv/http/vckit/wp-content/themes/vckit
 }
 icon() {
-  cd /srv/http/craftego/wp-content/plugins/vc-elegant-icon-box
-}
-hover() {
-  cd /srv/http/craftego/wp-content/plugins/vc-marvelous-hover
+  cd /srv/http/marveloushover/wp-content/plugins/vc-elegant-icon-box
 }
 minion() {
   cd ~/work/ownego/data-minion/website
@@ -91,6 +96,34 @@ minion() {
 hego() {
   cd /srv/http/hego/wp-content/themes/hego
 }
+lean() {
+  cd /home/mihnsen/work/namsource/frontend
+}
+claue() {
+  cd /home/mihnsen/Documents/themes-source/claue/Claue\ package/Claue\ demo\ file/demo-claue-myshopify-com-home-1
+}
+bong() {
+  cd /home/mihnsen/work/ownego/bongbycatt
+}
+qv() {
+  cd /srv/http/vckit/wp-content/plugins/wp-quick-view
+}
+thomsen() {
+  cd /srv/http/thomsen/wp-content/themelego/thomsen/src/thomsen
+}
+lightbox() {
+  cd /srv/http/lightbox/wp-content/plugins/essential-lightbox
+}
+qc() {
+  cd /srv/http/lightbox/wp-content/plugins/quick-facebook-chat
+}
+five() {
+  cd /srv/http/vckit/wp-content/plugins/vc-five-columns
+}
+gallery() {
+  cd /srv/http/lightbox/wp-content/plugins/unix-gallery
+}
+
 
 
 # SSH AGENT

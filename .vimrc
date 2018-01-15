@@ -1,41 +1,49 @@
-" Dependencies https://github.com/powerline/fonts
+"" Dependencies https://github.com/powerline/fonts
 set nocompatible
 filetype off
 
 call plug#begin('~/.vim/bundle')
 
-Plug 'ap/vim-css-color'
+"Plug 'ap/vim-css-color'
 Plug 'digitaltoad/vim-pug'
 Plug 'easymotion/vim-easymotion'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'groenewege/vim-less'
 Plug 'itchyny/lightline.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'ctrlpvim/ctrlp.vim'
-"Plug 'pangloss/vim-javascript'
+Plug 'pangloss/vim-javascript'
 Plug 'godlygeek/tabular'
 Plug 'scrooloose/nerdtree'
 Plug 'tmhedberg/matchit'
-Plug 'tommcdo/vim-exchange'
 Plug 'tpope/vim-haml'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-liquid'
+Plug 'tpope/vim-commentary'
 Plug 'Yggdroot/indentLine'
 Plug 'mileszs/ack.vim'
-Plug 'scrooloose/nerdcommenter'
-"Plug 'janko-m/vim-test'
 Plug 'yssl/QFEnter'
 Plug 'airblade/vim-gitgutter'
-
-" Vim faster
+Plug 'moll/vim-bbye'
+Plug 'posva/vim-vue'
 
 " Snippets
-"Plug 'mattn/emmet-vim'
-Plug 'tomtom/tlib_vim'
-Plug 'MarcWeber/vim-addon-mw-utils'
-Plug 'garbas/vim-snipmate'
-Plug 'honza/vim-snippets'
-"Plug 'kbarrette/mediummode'
+"Plug 'tomtom/tlib_vim'
+"Plug 'MarcWeber/vim-addon-mw-utils'
+"Plug 'garbas/vim-snipmate'
+"Plug 'honza/vim-snippets'
+
+" Javascript autocomplete
+"Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
+
+" Php auto autocomplete
+" Dependencies https://github.com/padawan-php/padawan.php
+"Plug 'Shougo/deoplete.nvim'
+"Plug 'mkusher/padawan.vim'
+"Plug 'padawan-php/deoplete-padawan', { 'do': 'composer install' }
+
+" Scss
+"Plug 'cakebaker/scss-syntax.vim' " Currently not working and no-idea
 
 call plug#end()
 
@@ -60,7 +68,6 @@ set cursorline
 set colorcolumn=81
 highlight CursorColumn ctermbg=8
 highlight ColorColumn ctermbg=8
-" highlight Visual ctermbg=255 ctermfg=16
 
 " fix normal keys, and lock mouse
 set backspace=indent,eol,start
@@ -176,14 +183,6 @@ endif
 
 
 "--------------------------------- PLUGIN -------------------------------------"
-" Exchange
-" @see https://github.com/tommcdo/vim-exchange
-let g:exchange_no_mappings=1
-nmap cx <Plug>(Exchange)
-vmap X <Plug>(Exchange)
-nmap cxc <Plug>(ExchangeClear)
-nmap cxx <Plug>(ExchangeLine)
-
 
 " Ctrlp
 " @see https://github.com/ctrlpvim/ctrlp.vim
@@ -197,6 +196,7 @@ set wildignore+=*/bower_components/**
 set wildignore+=*/.git/**
 set wildignore+=*/.svn/**
 set wildignore+=*/storage/**
+set wildignore+=*/semantic/**
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Wild settings
@@ -225,7 +225,7 @@ let g:NERDTreeMapOpenVSplit = '<C-v>'
 let NERDTreeShowLineNumbers=1
 autocmd FileType nerdtree setlocal relativenumber
 
-let NERDTreeIgnore = ['\.pyc$', '\.png$', '\.jpg$', 'vendor', 'vendors', 'bower_components', 'node_modules']
+let NERDTreeIgnore = ['\.pyc$', '\.png$', '\.jpg$', 'vendors', 'vendor', 'bower_components', 'node_modules']
 " hide on startup
 function! StartUp()
   if 0 == argc()
@@ -239,23 +239,18 @@ autocmd VimEnter * call StartUp()
 "--------------------------------- EXTRA -------------------------------------"
 
 
-" Ultisnips
-" let g:UltiSnipsExpandTrigger="<c-k>"
-" let g:UltiSnipsJumpForwardTrigger="<c-b>"
-" let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-
 " The Silver Searcher
 if executable('ag')
  " Use ag over grep
  set grepprg=ag\ --nogroup\ --nocolor
 
  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
- let g:ctrlp_user_command = 'ag %s -l --nocolor -g "" --ignore={*.psd,*.jpg,*.png,*.jpeg,*.gif,*.eot,*.eol,*.ttf,*.otf,*.afm,*.ffil,*.fon,*.pfm,*.pfb,*.woff,*.svg,*.std,*.pro,*.xsf,*.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz} --ignore-dir=includes/cmb2 --ignore-dir=inc/cmb2'
+ let g:ctrlp_user_command = 'ag %s -l --nocolor -g "" --ignore={*.psd,*.jpg,*.png,*.jpeg,*.gif,*.eot,*.eol,*.ttf,*.otf,*.afm,*.ffil,*.fon,*.pfm,*.pfb,*.woff,*.svg,*.std,*.pro,*.xsf,*.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz}'
 
  " ag is fast enough that CtrlP doesn't need to cache
  let g:ctrlp_use_caching = 0
 endif
-let g:ackprg = 'ag --nogroup --nocolor --column'
+let g:ackprg = 'ag --nogroup --nocolor --column --ignore=package-lock.json --ignore=yarn.lock --ignore-dir=includes/cmb2 --ignore-dir=inc/cmb2 --ignore-dir=semantic'
 cnoreabbrev Ack Ack!
 noremap <C-s> :Ack! <cword><cr>
 noremap <C-a> :Ack!<space>
@@ -341,13 +336,14 @@ endfunction
 
 " Jade
 autocmd BufRead,BufNewFile *.jade setlocal ft=pug
+autocmd BufRead,BufNewFile *.liquid setlocal ft=html
 
 " Easymotion
-" map m <Plug>(easymotion-prefix)
-" map ml <Plug>(easymotion-lineforward)
-" map mj <Plug>(easymotion-j)
-" map mk <Plug>(easymotion-k)
-" map mh <Plug>(easymotion-linebackward)
+map m <Plug>(easymotion-prefix)
+map ml <Plug>(easymotion-lineforward)
+map mj <Plug>(easymotion-j)
+map mk <Plug>(easymotion-k)
+map mh <Plug>(easymotion-linebackward)
 let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
 
 
@@ -359,10 +355,109 @@ smap <C-J> <Plug>snipMateNextOrTrigger
 nnoremap <leader>ue :e ~/.vim/bundle/vim-snippets/snippets<CR>
 
 " Gitgutter
-let g:gitgutter_sign_column_always = 1
+set signcolumn=yes
+let g:gitgutter_max_signs = 500
+let g:gitgutter_realtime = 0
+let g:gitgutter_eager = 0
 
-" Codeclimate
-nmap <C-i> :CodeClimateAnalyzeCurrentFile<CR>
+" Vim javascript
+let g:javascript_plugin_jsdoc = 1
+let g:javascript_plugin_ngdoc = 1
+
+
+" Scss syntax
+au BufRead,BufNewFile *.scss set filetype=css
+au BufRead,BufNewFile *.sass set filetype=css
+augroup VimCSS3Syntax
+  autocmd!
+
+  autocmd FileType css setlocal iskeyword+=-
+augroup END
+
+
+" New 27-12-2017
+:nnoremap <Leader>q :Bdelete<CR>
+
+" Use deoplete.
+let g:deoplete#enable_at_startup = 1
+
+let g:neocomplete#disable_auto_complete = 0
+let g:neocomplete#enable_auto_select = 0
+let g:neocomplete#enable_auto_delimiter = 1
+let g:neocomplete#enable_auto_close_preview = 1
+let g:neocomplete#skip_auto_completion_time = ''
+let g:neocomplete#max_list = 150
+
+
+" JAVASCRIPT AUTOCOMPLTE
+" Set bin if you have many instalations
+let g:deoplete#sources#ternjs#tern_bin = '/usr/local/bin/tern'
+let g:deoplete#sources#ternjs#timeout = 1
+
+" Whether to include the types of the completions in the result data. Default: 0
+let g:deoplete#sources#ternjs#types = 1
+
+" Whether to include the distance (in scopes for variables, in prototypes for 
+" properties) between the completions and the origin position in the result 
+" data. Default: 0
+let g:deoplete#sources#ternjs#depths = 1
+
+" Whether to include documentation strings (if found) in the result data.
+" Default: 0
+let g:deoplete#sources#ternjs#docs = 1
+
+" When on, only completions that match the current word at the given point will
+" be returned. Turn this off to get all results, so that you can filter on the 
+" client side. Default: 1
+let g:deoplete#sources#ternjs#filter = 0
+
+" Whether to use a case-insensitive compare between the current word and 
+" potential completions. Default 0
+let g:deoplete#sources#ternjs#case_insensitive = 1
+
+" When completing a property and no completions are found, Tern will use some 
+" heuristics to try and return some properties anyway. Set this to 0 to 
+" turn that off. Default: 1
+let g:deoplete#sources#ternjs#guess = 0
+
+" Determines whether the result set will be sorted. Default: 1
+let g:deoplete#sources#ternjs#sort = 0
+
+" When disabled, only the text before the given position is considered part of 
+" the word. When enabled (the default), the whole variable name that the cursor
+" is on will be included. Default: 1
+let g:deoplete#sources#ternjs#expand_word_forward = 0
+
+" Whether to ignore the properties of Object.prototype unless they have been 
+" spelled out by at least two characters. Default: 1
+let g:deoplete#sources#ternjs#omit_object_prototype = 0
+
+" Whether to include JavaScript keywords when completing something that is not 
+" a property. Default: 0
+let g:deoplete#sources#ternjs#include_keywords = 1
+
+" If completions should be returned when inside a literal. Default: 1
+let g:deoplete#sources#ternjs#in_literal = 0
+
+
+"Add extra filetypes
+let g:deoplete#sources#ternjs#filetypes = [
+                \ 'jsx',
+                \ 'javascript.jsx',
+                \ 'vue',
+                \ ]
+
+" PHP
+" Php autocomplete config
+let g:padawan#composer_command = "php /usr/bin/composer"
+let g:padawan#timeout = 0.1
+
+let g:neocomplete#force_omni_input_patterns = {}
+let g:neocomplete#force_omni_input_patterns.php =
+\ '\h\w*\|[^- \t]->\w*'
+
+nmap <C-nn> :PadawanGenerateIndex<CR>
+nmap <C-nm> :PadawanStartServer<CR>
 
 
 " Load local vimrc, if any

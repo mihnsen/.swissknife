@@ -10,8 +10,8 @@
   c = commit -m
   co = checkout
   cp = cherry-pick
-  d = !"d() { git diff --patch-with-stat $1 $2 || git diff --patch-with-stat $1 || git diff --patch-with-stat; }; git diff-index --quiet HEAD -- || clear; d"
-  dc = !"d() { git diff --cached --patch-with-stat $1 || git diff --cached --patch-with-stat; }; git diff-index --quiet HEAD -- || clear; d"
+  d = !"d() { git diff --patch-with-stat --color $1 $2 | diff-so-fancy | less --tabs=4 -RFX --pattern '^(Date|added|deleted|modified): ' || git diff --patch-with-stat --color $1 | diff-so-fancy | less --tabs=4 -RFX --pattern '^(Date|added|deleted|modified): ' || git diff --patch-with-stat --color | diff-so-fancy | less --tabs=4 -RFX --pattern '^(Date|added|deleted|modified): '; }; git diff-index --quiet HEAD -- || clear; d"
+  dc = !"d() { git diff --cached --patch-with-stat --color $1 | diff-so-fancy | less --tabs=4 -RFX --pattern '^(Date|added|deleted|modified): ' || git diff --cached --patch-with-stat --color | diff-so-fancy | less --tabs=4 -RFX --pattern '^(Date|added|deleted|modified): '; }; git diff-index --quiet HEAD -- || clear; d"
   f = fetch -p
   l = log --oneline
   m = merge

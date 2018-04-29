@@ -1,0 +1,4 @@
+config
+*.so
+*.pyc
+.*.swp

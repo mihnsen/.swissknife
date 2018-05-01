@@ -186,6 +186,7 @@ set $rss               exec exec i3-sensible-terminal -e canto
 set $network_manager   exec exec i3-sensible-terminal -e wicd-curses
 set $bluetooth_manager exec exec blueman-manager
 set $chat              exec exec slack
+set $chat              exec exec mailspring
 set $irc               exec exec i3-sensible-terminal -e irssi
 set $python            exec exec i3-sensible-terminal -bg Black -fg White -e ipython
 set $python3           exec exec i3-sensible-terminal -bg Black -fg White -e ipython3
@@ -331,17 +332,20 @@ bindsym $mod+F4 exec --no-startup-id exec ~/.swissknife/i3/i3companion/toggle_bl
 
 
 
-assign [class="^(Skype|Slack)$"] 10
-assign [class="^(VirtualBox|Thunderbird|Blueman)$"] 8
+assign [class="^(Skype|Slack|Mailspring|Thunderbird)$"] 10
+assign [class="^(VirtualBox|Hubstaff)$"] 8
 
 ##################################################:############ exec section ###
 exec --no-startup-id fcitx
 exec --no-startup-id rescuetime
-#exec --no-startup-id nm-applet
+exec --no-startup-id nm-applet
 exec --no-startup-id slack
-exec --no-startup-id blueman-applet
+exec --no-startup-id mailspring
+exec --no-startup-id redshift
+exec --no-startup-id hubstaff
+#exec --no-startup-id blueman-applet
 exec --no-startup-id i3pystatus > ~/i3pystatus.log
-exec --no-startup-id feh --bg-fill ~/.swissknife/i3/torvalds-quote.jpg
+exec --no-startup-id feh --bg-fill ~/.swissknife/i3/road.jpg
 
 
 # New config

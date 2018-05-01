@@ -28,10 +28,16 @@ Plug 'moll/vim-bbye'
 Plug 'posva/vim-vue'
 
 " Snippets
-"Plug 'tomtom/tlib_vim'
-"Plug 'MarcWeber/vim-addon-mw-utils'
-"Plug 'garbas/vim-snipmate'
-"Plug 'honza/vim-snippets'
+Plug 'tomtom/tlib_vim'
+Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'garbas/vim-snipmate'
+Plug 'honza/vim-snippets'
+
+" Typescript
+Plug 'Shougo/vimproc.vim', {'do' : 'make'}
+Plug 'leafgarland/typescript-vim'
+Plug 'HerringtonDarkholme/yats.vim'
+Plug 'Quramy/tsuquyomi'
 
 " Javascript autocomplete
 "Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
@@ -72,6 +78,9 @@ highlight ColorColumn ctermbg=8
 " fix normal keys, and lock mouse
 set backspace=indent,eol,start
 set mouse=
+
+" Disable visual sound
+set novb
 
 " new window or pane should be appended to bottom right
 set splitbelow
@@ -186,6 +195,7 @@ endif
 
 " Ctrlp
 " @see https://github.com/ctrlpvim/ctrlp.vim
+"let g:ctrlp_map = '<c-q>'
 let g:ctrlp_max_files = 0
 let g:ctrlp_working_path_mode = 0
 let g:ctrlp_show_hidden = 1
@@ -204,7 +214,7 @@ set wildignore+=*/semantic/**
 set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem
 set wildignore+=*.psd,*.png,*.jpg,*.gif,*.jpeg
 set wildignore+=*.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz
-set wildignore+=*/vendor/gems/*,*/vendor/cache/*,*/.bundle/*,*/.sass-cache/*,*/kirki/*
+set wildignore+=*/vendor/gems/*,*/vendor/cache/*,*/.bundle/*,*/.sass-cache/*,*/kirki/*,*/dist/*,*/node_modules/*,*/bower_components/*
 set wildignore+=*.swp,*~,._*
 set wildignore+=*.min.js
 set wildignore+=*.pot,*.po,*.mo
@@ -225,7 +235,7 @@ let g:NERDTreeMapOpenVSplit = '<C-v>'
 let NERDTreeShowLineNumbers=1
 autocmd FileType nerdtree setlocal relativenumber
 
-let NERDTreeIgnore = ['\.pyc$', '\.png$', '\.jpg$', 'vendors', 'vendor', 'bower_components', 'node_modules']
+let NERDTreeIgnore = ['\.pyc$', 'vendors', 'bower_components', 'node_modules']
 " hide on startup
 function! StartUp()
   if 0 == argc()
@@ -245,12 +255,12 @@ if executable('ag')
  set grepprg=ag\ --nogroup\ --nocolor
 
  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
- let g:ctrlp_user_command = 'ag %s -l --nocolor -g "" --ignore={*.psd,*.jpg,*.png,*.jpeg,*.gif,*.eot,*.eol,*.ttf,*.otf,*.afm,*.ffil,*.fon,*.pfm,*.pfb,*.woff,*.svg,*.std,*.pro,*.xsf,*.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz}'
+ let g:ctrlp_user_command = 'ag %s -l --nocolor -g "" --ignore={*.psd,*.jpg,*.png,*.jpeg,*.gif,*.eot,*.eol,*.ttf,*.otf,*.afm,*.ffil,*.fon,*.pfm,*.pfb,*.woff,*.svg,*.std,*.pro,*.xsf,*.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz} --ignore=package-lock.json --ignore=yarn.lock --ignore-dir=includes/cmb2 --ignore-dir=inc/cmb2 --ignore-dir=semantic --ignore-dir=node_modules --ignore-dir=bower_components --ignore-dir=dist'
 
  " ag is fast enough that CtrlP doesn't need to cache
  let g:ctrlp_use_caching = 0
 endif
-let g:ackprg = 'ag --nogroup --nocolor --column --ignore=package-lock.json --ignore=yarn.lock --ignore-dir=includes/cmb2 --ignore-dir=inc/cmb2 --ignore-dir=semantic'
+let g:ackprg = 'ag --nogroup --nocolor --column --ignore=package-lock.json --ignore=yarn.lock --ignore-dir=includes/cmb2 --ignore-dir=inc/cmb2 --ignore-dir=semantic --ignore-dir=node_modules --ignore-dir=bower_components'
 cnoreabbrev Ack Ack!
 noremap <C-s> :Ack! <cword><cr>
 noremap <C-a> :Ack!<space>
@@ -458,6 +468,9 @@ let g:neocomplete#force_omni_input_patterns.php =
 
 nmap <C-nn> :PadawanGenerateIndex<CR>
 nmap <C-nm> :PadawanStartServer<CR>
+
+" Typescript
+nmap <C-c> :TsuGeterr<CR>
 
 
 " Load local vimrc, if any

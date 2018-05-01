@@ -2,22 +2,19 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-# xmonad config
-if hash xmonad 2>/dev/null; then
-  echo -e "\n\033[32mConfiguring xmonad\033[m";
-  mkdir $HOME/.xmonad;
-  ln -sf $DIR/.xmonad/xmonad.hs $HOME/.xmonad/;
-  ln -sf $DIR/.xmonad/xmobar.hs $HOME/.xmonad/;
-  ln -sf $DIR/.xmonad/trayer-factory $HOME/.xmonad/;
-  ln -sf $DIR/.xmonad/feh-factory $HOME/.xmonad/;
-  ln -sf $DIR/.wallpaper $HOME/;
+# i3 config
+if hash i3 2>/dev/null; then
+  echo -e "\n\033[32mConfiguring i3\033[m";
+  mkdir $HOME/.config/i3;
+  ln -sf $DIR/i3/config $HOME/.config/i3/;
 fi
 
 # vim config
 echo -e "\n\033[32mConfiguring vim\033[m";
 ln -sf $DIR/.vimrc $HOME/;
-if [ ! -d "$HOME/.vim/bundle/Vundle.vim" ]; then
-  git clone https://github.com/VundleVim/Vundle.vim.git $HOME/.vim/bundle/Vundle.vim;
+if [ ! -d "$HOME/.vim/autoload/plug.vim" ]; then
+  curl -fLo $HOME/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  curl -fLo $HOME/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 fi
 vim +PluginInstall +qall
 

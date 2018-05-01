@@ -20,6 +20,8 @@
   rl = reflog
   s = status -sb -unormal
   v = log --graph --all --format=\"%C(auto)%h%C(reset) %C(auto)%d%C(reset) %s %C(yellow)- %an, %ad%C(reset) %C(dim green)%G?%C(reset)\" --date=relative
+  vb = log --graph --format=\"%C(auto)%h%C(reset) %C(auto)%d%C(reset) %s %C(yellow)- %an, %ad%C(reset) %C(dim green)%G?%C(reset)\" --date=relative
+  self-changelog = log --graph --format=\"%C(auto)%h%C(reset) %C(auto)%d%C(reset) %s %C(yellow)\" --date=relative
   vv = log --graph --all --format=\"%C(auto)%h%C(reset) %C(auto)%d%C(reset) %s %C(dim cyan)- %an, %ad%C(reset)%n         %C(dim)author  :%C(reset) %C(yellow)%aN <%aE>.%C(reset) %C(cyan)%aD%C(reset)%n         %C(dim)commiter:%C(reset) %C(yellow)%cN <%cE>.%C(reset) %C(cyan)%cD%C(reset)%n         %C(dim)signing :%C(reset) %C(bold green)%G?.%C(reset) %C(yellow)%GS%C(reset) %C(dim cyan)%GK%C(reset)\" --date=relative
   fc = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short -S$1; }; f"
   fm = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short --grep=$1; }; f"

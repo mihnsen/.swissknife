@@ -15,9 +15,12 @@ alias tmux="tmux -2"
 alias grep="grep --color"
 alias g="git"
 alias vim="nvim"
+alias vi="nvim"
 alias ffind="ag -g"
+alias f="ranger"
 alias mount="sudo mount"
 alias bi="bundle install"
+alias k="kubectl"
 
 # YAOURT ALIASES {{{
   alias yaoupg='yaourt -Syu --aur --no-confirm'
@@ -32,7 +35,12 @@ export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 # require virtualenvwrapper
 export PATH=/opt/android-sdk/tools:/opt/android-sdk/platform-tools:~/.npm-global/bin:/usr/local/share/python:$PATH
 export PATH=$PATH:$HOME/.config/composer/vendor/bin
+export PATH=$PATH:$HOME/.local/bin #elastic beanstalk command line tool
+export PATH=$PATH:${KREW_ROOT:-$HOME/.krew}/bin #elastic beanstalk command line tool
+#export PATH=$PATH:$HOME/.npm-global/bin
 export WORKON_HOME=$HOME/.virtualenvs
+export KUBECONFIG=$HOME/.kube/config:$HOME/.kube/qikify/qikify-staging-kube-kubeconfig.yaml:$HOME/.kube/qikify/qikify-production-kube-kubeconfig.yaml:$HOME/.kube/axisflow/axisflow-prod-cluster-kubeconfig.yaml:$HOME/.kube/csi/csi-cluster-kubeconfig.yaml
+
 alias venv=". /usr/local/bin/virtualenvwrapper.sh && workon \"$1\""
 
 export LANG="en_US.UTF-8"
@@ -43,6 +51,9 @@ export LC_MONETARY="en_US.UTF-8"
 export LC_NUMERIC="en_US.UTF-8"
 export LC_TIME="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
+
+GTK_PATH=:/usr/lib/gtk-2.0
+GOPATH=:$HOME/go
 
 # vim binding
 set -o vi
@@ -59,91 +70,86 @@ set -o vi
 # fi
 #
 
-# Functional alias
+# Docker help
+export DOCKERHOST=$(ifconfig | grep -E "([0-9]{1,3}\.){3}[0-9]{1,3}"      | grep -v 127.0.0.1 | awk '{ print $2 }' | cut -f2 -d: | tail -1)
 docker-ip() {
   docker inspect --format '{{ .NetworkSettings.IPAddress }}' "$@"
 }
+
+# Functional alias
 hosts() {
   sudo vim /etc/hosts
 }
-craftego() {
-  cd /srv/http/craftego/wp-content/themes/craftego
-}
-thememove() {
-  cd /srv/http/thememove/wp-content/themes
-}
-kit() {
-  cd /srv/http/vckit/wp-content/plugins/visual-composer-kit
-}
-grid() {
-  cd /srv/http/vckit/wp-content/plugins/vc-advanced-grids
-}
-qikify() {
-  cd /srv/http/qikify
-}
-marve() {
-  cd /srv/http/marveloushover/wp-content/plugins/vc-marvelous-hover
-}
-kittheme() {
-  cd /srv/http/vckit/wp-content/themes/vckit
-}
-icon() {
-  cd /srv/http/marveloushover/wp-content/plugins/vc-elegant-icon-box
-}
-minion() {
-  cd ~/work/ownego/data-minion/website
-}
-hego() {
-  cd /srv/http/hego/wp-content/themes/hego
-}
-lean() {
-  cd /home/mihnsen/work/namsource/frontend
-}
-claue() {
-  cd /home/mihnsen/Documents/themes-source/claue/Claue\ package/Claue\ demo\ file/demo-claue-myshopify-com-home-1
-}
-bong() {
-  cd /home/mihnsen/work/ownego/bongbycatt
-}
-qv() {
-  cd /srv/http/vckit/wp-content/plugins/wp-quick-view
-}
-thomsen() {
-  cd /srv/http/thomsen/wp-content/themelego/thomsen/src/thomsen
-}
-lightbox() {
-  cd /srv/http/lightbox/wp-content/plugins/essential-lightbox
-}
-qc() {
-  cd /srv/http/lightbox/wp-content/plugins/quick-facebook-chat
-}
-five() {
-  cd /srv/http/vckit/wp-content/plugins/vc-five-columns
-}
-gallery() {
-  cd /srv/http/lightbox/wp-content/plugins/unix-gallery
-}
+alias kit="cd /srv/http/vckit/wp-content/plugins/visual-composer-kit"
+alias qikify="cd /srv/http/qikify-api"
+alias marve="cd /srv/http/marveloushover/wp-content/plugins/marvelous-hover"
+alias icon="cd /srv/http/marveloushover/wp-content/plugins/vc-elegant-icon-box"
 
+# New year 2018
+alias portal="cd /home/mihnsen/work/qikify/portal"
+alias smartbar="cd /home/mihnsen/work/qikify/smartbar"
+alias tmenu="cd /home/mihnsen/work/qikify/tmenu"
+alias mobilemenu="cd /home/mihnsen/work/qikify/mobilemenu"
+alias qview="cd /home/mihnsen/work/qikify/qview"
+alias bcontact="cd /home/mihnsen/work/qikify/contactform"
+alias stickycart="cd /home/mihnsen/work/qikify/stickycart"
+alias landing="cd /srv/http/qikify/wp-content/themes/qikify"
+alias qdeploy="cd /home/mihnsen/work/qikify/deployment"
+alias slideshow="cd /home/mihnsen/work/qikify/collection-slideshow"
+alias salekit="cd /home/mihnsen/work/qikify/salekit"
 
+alias adart="cd /home/mihnsen/work/adart"
+alias aries="cd /home/mihnsen/work/adart/aries"
+alias wapi="cd /srv/http/webbit-api"
+alias wapp="cd ~/work/webbit/frontend"
+alias aapi="cd /home/mihnsen/work/axistech/axisflow-api"
+alias aapp="cd /home/mihnsen/work/axistech/axisflow-app"
+alias adocker="cd /home/mihnsen/work/axistech/axisflow-dockerize"
+alias aengine="cd /home/mihnsen/work/axistech/axisflow-execution-engine"
+alias agrapql="cd /home/mihnsen/work/axistech/axisflow-graphql"
+alias ahexpack="cd /home/mihnsen/work/axistech/axisflow-hexpack"
+
+alias sshw="ssh -i ~/Documents/pemkey/pharmacyhalo-docker-elasticbeanstalk.pem ec2-user@ec2-13-239-32-224.ap-southeast-2.compute.amazonaws.com"
+alias sshq="ssh root@165.22.0.52"
+alias sshqmongo="ssh root@198.199.83.228"
+alias sshs="ssh root@206.189.145.179"
+alias sshaxisflowsit="ssh root@206.189.44.166"
+alias sshcsido="ssh root@167.71.215.148"
+alias sshcsitest="ssh root@157.245.61.71"
+alias sshcsisit="ssh apiGeeksAdmin@ec2-54-252-167-39.ap-southeast-2.compute.amazonaws.com"
+
+alias sshthemelego="ssh root@104.236.232.202"
+
+alias mcapp="cd /home/mihnsen/work/mailchimpconnect/app"
+alias mcapi="cd /home/mihnsen/work/mailchimpconnect/api"
+alias mckube="cd /home/mihnsen/work/mailchimpconnect/kubernetes"
+
+alias csi="cd /home/mihnsen/work/csi"
+alias capp="cd /home/mihnsen/work/csi/app"
+alias cie="cd /home/mihnsen/work/csi/amplify-ui-ie"
+alias cys="cd /home/mihnsen/work/csi/amplify-ui-ys"
+alias cadmin="cd /home/mihnsen/work/csi/amplify-ui-admin"
+alias crender="cd /home/mihnsen/work/csi/amplify-ui-render"
+alias cspi="cd /home/mihnsen/work/csi/amplify-ui-spi"
+alias cdocs="cd /home/mihnsen/work/csi/amplify-ui-docs"
+alias csql="cd /home/mihnsen/work/csi/amplify-api-sql"
+alias ccrudio="cd /home/mihnsen/work/csi/amplify-crudio"
+alias capi="cd /home/mihnsen/work/csi/amplify-k8s-apis"
+alias csearch="cd /home/mihnsen/work/csi/amplify-sysnonyms-search"
+alias ck8s="cd /home/mihnsen/work/csi/amplify-k8s-platform"
+alias chasura="cd /home/mihnsen/work/csi/amplify-custom-hasura-ie"
+alias cdistribution="cd /home/mihnsen/work/csi/amplify-ie-survey-distribution"
+alias csynonyms="cd /home/mihnsen/work/csi/amplify-ie-synonyms"
+
+alias vgrid="cd /home/mihnsen/work/mihnsen/vue-ui-grid"
+alias vcarousel="cd /home/mihnsen/work/mihnsen/vue-ui-carousel"
+
+alias tapi="cd /home/mihnsen/work/teeinblue/api"
+alias tportal="cd /home/mihnsen/work/teeinblue/portal"
+alias tsdk="cd /home/mihnsen/work/teeinblue/sdk"
+
+# SSH keychain
+eval `keychain --eval --agents ssh id_rsa`
 
 # SSH AGENT
 SSH_ENV="$HOME/.ssh/environment"
-
-# function start_agent {
-#   echo "Initialising new SSH agent..."
-#   /usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
-#   echo succeeded
-#   chmod 600 "${SSH_ENV}"
-#   . "${SSH_ENV}" > /dev/null
-#   /usr/bin/ssh-add
-#   /usr/bin/ssh-add /home/mihnsen/.ssh/minhnd;
-# }
-# if [ -f "${SSH_ENV}" ]; then
-#   . "${SSH_ENV}" > /dev/null
-#   #ps ${SSH_AGENT_PID} doesn't work under cywgin
-#   ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
-#     start_agent;
-#   }
-# else
-#   start_agent;
-# fi

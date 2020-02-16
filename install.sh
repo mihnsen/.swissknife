@@ -9,6 +9,20 @@ if hash i3 2>/dev/null; then
   ln -sf $DIR/i3/config $HOME/.config/i3/;
 fi
 
+# yabai config
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  if hash yabai 2>/dev/null; then
+    echo -e "\n\033[32mConfiguring yabai\033[m";
+    touch $HOME/.yabairc
+    ln -sf $DIR/.yabairc $HOME/;
+  fi
+  if hash yabai 2>/dev/null; then
+    echo -e "\n\033[32mConfiguring skhd\033[m";
+    touch $HOME/.skhdrc
+    ln -sf $DIR/.skhdrc $HOME/;
+  fi
+fi
+
 # vim config
 echo -e "\n\033[32mConfiguring vim\033[m";
 ln -sf $DIR/.vimrc $HOME/;

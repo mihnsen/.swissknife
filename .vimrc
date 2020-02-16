@@ -255,7 +255,7 @@ if executable('ag')
  set grepprg=ag\ --nogroup\ --nocolor
 
  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
- let g:ctrlp_user_command = 'ag %s -l --nocolor -g "" --ignore={*.psd,*.jpg,*.png,*.jpeg,*.gif,*.eot,*.eol,*.ttf,*.otf,*.afm,*.ffil,*.fon,*.pfm,*.pfb,*.woff,*.svg,*.std,*.pro,*.xsf,*.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz} --ignore=package-lock.json --ignore=yarn.lock --ignore-dir=includes/cmb2 --ignore-dir=inc/cmb2 --ignore-dir=semantic --ignore-dir=node_modules --ignore-dir=bower_components --ignore-dir=dist'
+ let g:ctrlp_user_command = 'ag %s -l --nocolor -g "" --ignore={\*.psd,\*.jpg,\*.png,\*.jpeg,\*.gif,\*.eot,\*.eol,\*.ttf,\*.otf,\*.afm,\*.ffil,\*.fon,\*.pfm,\*.pfb,\*.woff,\*.svg,\*.std,\*.pro,\*.xsf,\*.zip,\*.tar.gz,\*.tar.bz2,\*.rar,\*.tar.xz} --ignore=package-lock.json --ignore=yarn.lock --ignore-dir=includes/cmb2 --ignore-dir=inc/cmb2 --ignore-dir=semantic --ignore-dir=node_modules --ignore-dir=bower_components --ignore-dir=dist'
 
  " ag is fast enough that CtrlP doesn't need to cache
  let g:ctrlp_use_caching = 0

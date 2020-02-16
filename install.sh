@@ -62,4 +62,19 @@ else
   ln -sf $DIR/.bash_kit $HOME/;
   echo source \$HOME/.bash_kit >> $HOME/.bashrc
 fi
+
+echo -e "\n\033[32mConfiguring private bash\033[m";
+if [[ -f $HOME/.bash_private ]]; then
+  if grep -Fxq ".bash_private" $HOME/.bashrc; then
+    echo ".bash_private already included"
+  else
+    ln -sf $DIR/.bash_kit $HOME/;
+    echo source \$HOME/.bash_private >> $HOME/.bashrc
+  fi
+else
+  echo ".bash_private is not exist, please configure one"
+fi
+
 touch ~/.hushlogin
+
+echo -e "\n\033[32mFinnish installation, happy with new env..\033[m";

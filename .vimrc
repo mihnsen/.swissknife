@@ -349,12 +349,12 @@ autocmd BufRead,BufNewFile *.jade setlocal ft=pug
 autocmd BufRead,BufNewFile *.liquid setlocal ft=html
 
 " Easymotion
-map m <Plug>(easymotion-prefix)
-map ml <Plug>(easymotion-lineforward)
-map mj <Plug>(easymotion-j)
-map mk <Plug>(easymotion-k)
-map mh <Plug>(easymotion-linebackward)
-let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
+"map m <Plug>(easymotion-prefix)
+"map ml <Plug>(easymotion-lineforward)
+"map mj <Plug>(easymotion-j)
+"map mk <Plug>(easymotion-k)
+"map mh <Plug>(easymotion-linebackward)
+"let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
 
 
 " Snipmate

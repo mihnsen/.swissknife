@@ -22,6 +22,7 @@ alias mount="sudo mount"
 alias bi="bundle install"
 alias k="kubectl"
 alias hosts="sudo vim /etc/hosts"
+alias dockerstopall="docker stop $(docker ps -aq)"
 
 # YAOURT ALIASES {{{
   alias yaoupg='yaourt -Syu --aur --no-confirm'

@@ -23,6 +23,8 @@ alias bi="bundle install"
 alias k="kubectl"
 alias hosts="sudo vim /etc/hosts"
 alias dockerstopall="docker stop $(docker ps -aq)"
+alias weather="curl https://wttr.in"
+alias kcleanevict="kubectl get pods -o wide | grep Evicted | awk '{print $1}' | xargs kubectl delete pod"
 
 # YAOURT ALIASES {{{
   alias yaoupg='yaourt -Syu --aur --no-confirm'

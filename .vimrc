@@ -4,15 +4,14 @@ filetype off
 
 call plug#begin('~/.vim/bundle')
 
-"Plug 'ap/vim-css-color'
 Plug 'digitaltoad/vim-pug'
-"Plug 'easymotion/vim-easymotion'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'easymotion/vim-easymotion'
 Plug 'editorconfig/editorconfig-vim'
+Plug 'godlygeek/tabular'
 Plug 'itchyny/lightline.vim'
 Plug 'jiangmiao/auto-pairs'
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'pangloss/vim-javascript'
-Plug 'godlygeek/tabular'
 Plug 'scrooloose/nerdtree'
 Plug 'tmhedberg/matchit'
 "Plug 'tpope/vim-haml'
@@ -27,29 +26,13 @@ Plug 'airblade/vim-gitgutter'
 Plug 'moll/vim-bbye'
 Plug 'posva/vim-vue'
 
-" Snippets
-Plug 'tomtom/tlib_vim'
-Plug 'MarcWeber/vim-addon-mw-utils'
-Plug 'garbas/vim-snipmate'
-Plug 'honza/vim-snippets'
-
 " Typescript
-Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 Plug 'leafgarland/typescript-vim'
 Plug 'HerringtonDarkholme/yats.vim'
 Plug 'Quramy/tsuquyomi'
 
-" Javascript autocomplete
-"Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
-
-" Php auto autocomplete
-" Dependencies https://github.com/padawan-php/padawan.php
-"Plug 'Shougo/deoplete.nvim'
-"Plug 'mkusher/padawan.vim'
-"Plug 'padawan-php/deoplete-padawan', { 'do': 'composer install' }
-
-" Scss
-"Plug 'cakebaker/scss-syntax.vim' " Currently not working and no-idea
+" Copilot
+Plug 'github/copilot.vim', { 'branch': 'release' }
 
 call plug#end()
 
@@ -207,6 +190,7 @@ set wildignore+=*/.git/**
 set wildignore+=*/.svn/**
 set wildignore+=*/storage/**
 set wildignore+=*/semantic/**
+set wildignore+=*/coverage/**
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Wild settings
@@ -214,7 +198,7 @@ set wildignore+=*/semantic/**
 set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem
 set wildignore+=*.psd,*.png,*.jpg,*.gif,*.jpeg
 set wildignore+=*.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz
-set wildignore+=*/vendor/gems/*,*/vendor/cache/*,*/.bundle/*,*/.sass-cache/*,*/kirki/*,*/dist/*,*/node_modules/*,*/bower_components/*
+set wildignore+=*/vendor/gems/*,*/vendor/cache/*,*/.bundle/*,*/.sass-cache/*,*/kirki/*,*/dist/*,*/node_modules/*,*/bower_components/*,*/coverage/*
 set wildignore+=*.swp,*~,._*
 set wildignore+=*.min.js
 set wildignore+=*.pot,*.po,*.mo
@@ -349,20 +333,12 @@ autocmd BufRead,BufNewFile *.jade setlocal ft=pug
 autocmd BufRead,BufNewFile *.liquid setlocal ft=html
 
 " Easymotion
-"map m <Plug>(easymotion-prefix)
-"map ml <Plug>(easymotion-lineforward)
-"map mj <Plug>(easymotion-j)
-"map mk <Plug>(easymotion-k)
-"map mh <Plug>(easymotion-linebackward)
-"let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
-
-
-" Snipmate
-let g:snippets_dir = '~/.vim/bundle/vim-snippets/snippets'
-imap <C-e> <Plug>snipMateTrigger
-imap <C-J> <esc>a<Plug>snipMateNextOrTrigger
-smap <C-J> <Plug>snipMateNextOrTrigger
-nnoremap <leader>ue :e ~/.vim/bundle/vim-snippets/snippets<CR>
+map m <Plug>(easymotion-prefix)
+map ml <Plug>(easymotion-lineforward)
+map mj <Plug>(easymotion-j)
+map mk <Plug>(easymotion-k)
+map mh <Plug>(easymotion-linebackward)
+let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
 
 " Gitgutter
 set signcolumn=yes
@@ -373,7 +349,6 @@ let g:gitgutter_eager = 0
 " Vim javascript
 let g:javascript_plugin_jsdoc = 1
 let g:javascript_plugin_ngdoc = 1
-
 
 " Scss syntax
 au BufRead,BufNewFile *.scss set filetype=css
@@ -388,86 +363,7 @@ augroup END
 " New 27-12-2017
 :nnoremap <Leader>q :Bdelete<CR>
 
-" Use deoplete.
-let g:deoplete#enable_at_startup = 1
-
-let g:neocomplete#disable_auto_complete = 0
-let g:neocomplete#enable_auto_select = 0
-let g:neocomplete#enable_auto_delimiter = 1
-let g:neocomplete#enable_auto_close_preview = 1
-let g:neocomplete#skip_auto_completion_time = ''
-let g:neocomplete#max_list = 150
-
-
 " JAVASCRIPT AUTOCOMPLTE
-" Set bin if you have many instalations
-let g:deoplete#sources#ternjs#tern_bin = '/usr/local/bin/tern'
-let g:deoplete#sources#ternjs#timeout = 1
-
-" Whether to include the types of the completions in the result data. Default: 0
-let g:deoplete#sources#ternjs#types = 1
-
-" Whether to include the distance (in scopes for variables, in prototypes for 
-" properties) between the completions and the origin position in the result 
-" data. Default: 0
-let g:deoplete#sources#ternjs#depths = 1
-
-" Whether to include documentation strings (if found) in the result data.
-" Default: 0
-let g:deoplete#sources#ternjs#docs = 1
-
-" When on, only completions that match the current word at the given point will
-" be returned. Turn this off to get all results, so that you can filter on the 
-" client side. Default: 1
-let g:deoplete#sources#ternjs#filter = 0
-
-" Whether to use a case-insensitive compare between the current word and 
-" potential completions. Default 0
-let g:deoplete#sources#ternjs#case_insensitive = 1
-
-" When completing a property and no completions are found, Tern will use some 
-" heuristics to try and return some properties anyway. Set this to 0 to 
-" turn that off. Default: 1
-let g:deoplete#sources#ternjs#guess = 0
-
-" Determines whether the result set will be sorted. Default: 1
-let g:deoplete#sources#ternjs#sort = 0
-
-" When disabled, only the text before the given position is considered part of 
-" the word. When enabled (the default), the whole variable name that the cursor
-" is on will be included. Default: 1
-let g:deoplete#sources#ternjs#expand_word_forward = 0
-
-" Whether to ignore the properties of Object.prototype unless they have been 
-" spelled out by at least two characters. Default: 1
-let g:deoplete#sources#ternjs#omit_object_prototype = 0
-
-" Whether to include JavaScript keywords when completing something that is not 
-" a property. Default: 0
-let g:deoplete#sources#ternjs#include_keywords = 1
-
-" If completions should be returned when inside a literal. Default: 1
-let g:deoplete#sources#ternjs#in_literal = 0
-
-
-"Add extra filetypes
-let g:deoplete#sources#ternjs#filetypes = [
-                \ 'jsx',
-                \ 'javascript.jsx',
-                \ 'vue',
-                \ ]
-
-" PHP
-" Php autocomplete config
-let g:padawan#composer_command = "php /usr/bin/composer"
-let g:padawan#timeout = 0.1
-
-let g:neocomplete#force_omni_input_patterns = {}
-let g:neocomplete#force_omni_input_patterns.php =
-\ '\h\w*\|[^- \t]->\w*'
-
-nmap <C-nn> :PadawanGenerateIndex<CR>
-nmap <C-nm> :PadawanStartServer<CR>
 
 " Typescript
 nmap <C-c> :TsuGeterr<CR>

@@ -21,6 +21,11 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     touch $HOME/.skhdrc
     ln -sf $DIR/.skhdrc $HOME/;
   fi
+  if hash spacebar 2>/dev/null; then
+    echo -e "\n\033[32mConfiguring spacebar\033[m";
+    touch $HOME/.spacebarrc
+    ln -sf $DIR/.spacebarrc $HOME/;
+  fi
 fi
 
 # vim config

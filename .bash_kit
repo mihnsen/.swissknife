@@ -22,7 +22,7 @@ alias mount="sudo mount"
 alias bi="bundle install"
 alias k="kubectl"
 alias hosts="sudo vim /etc/hosts"
-alias dockerstopall="docker stop $(docker ps -aq)"
+#alias dockerstopall="docker stop $(docker ps -aq)"
 alias weather="curl https://wttr.in"
 alias kcleanevict="kubectl get pods -o wide | grep Evicted | awk '{print $1}' | xargs kubectl delete pod"
 
@@ -74,17 +74,17 @@ set -o vi
 #
 
 # Docker help
-export DOCKERHOST=$(ifconfig | grep -E "([0-9]{1,3}\.){3}[0-9]{1,3}"      | grep -v 127.0.0.1 | awk '{ print $2 }' | cut -f2 -d: | tail -1)
-docker-ip() {
-  docker inspect --format '{{ .NetworkSettings.IPAddress }}' "$@"
-}
+#export DOCKERHOST=$(ifconfig | grep -E "([0-9]{1,3}\.){3}[0-9]{1,3}"      | grep -v 127.0.0.1 | awk '{ print $2 }' | cut -f2 -d: | tail -1)
+# docker-ip() {
+#   docker inspect --format '{{ .NetworkSettings.IPAddress }}' "$@"
+# }
 
 # SSH keychain
-if [[ "$OSTYPE" == "darwin"* ]]; then
-  eval `keychain --eval --agents ssh --inherit any id_rsa`
-else
-  eval `keychain --eval --agents ssh id_rsa`
-fi
+#if [[ "$OSTYPE" == "darwin"* ]]; then
+#  eval `keychain --eval --agents ssh --inherit any id_rsa`
+#else
+#  eval `keychain --eval --agents ssh id_rsa`
+#fi
 
 # SSH AGENT
 SSH_ENV="$HOME/.ssh/environment"

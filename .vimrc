@@ -77,7 +77,7 @@ vnoremap , /,<CR>:noh<cr>
 noremap j gj
 noremap k gk
 noremap <BS> <NOP>
-set backspace=0
+"set backspace=0
 nnoremap <C-j> gj
 nnoremap <C-k> gk
 nnoremap <C-^> g^

@@ -80,16 +80,16 @@ set -o vi
 # }
 
 # SSH keychain
-#if [[ "$OSTYPE" == "darwin"* ]]; then
-#  eval `keychain --eval --agents ssh --inherit any id_rsa`
-#else
-#  eval `keychain --eval --agents ssh id_rsa`
-#fi
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  eval `keychain --eval --agents ssh --inherit any id_rsa`
+else
+  eval `keychain --eval --agents ssh id_rsa`
+fi
 
 # SSH AGENT
 SSH_ENV="$HOME/.ssh/environment"
 
-if [[ "$OSTYPE" == "darwin"* ]]; then
-  export PATH="/usr/local/opt/php@7.3/bin:$PATH"
-  export PATH="/usr/local/opt/php@7.3/sbin:$PATH"
-fi
+#if [[ "$OSTYPE" == "darwin"* ]]; then
+#  export PATH="/usr/local/opt/php@7.3/bin:$PATH"
+#  export PATH="/usr/local/opt/php@7.3/sbin:$PATH"
+#fi

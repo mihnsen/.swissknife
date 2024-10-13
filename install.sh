@@ -1,5 +1,7 @@
 #!/bin/bash
 
+ln -sf $DIR/deploy-image.sh $HOME/;
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # i3 config

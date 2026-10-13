@@ -41,9 +41,9 @@ fi
 # echo "$DOCKER_PKG:$DOCKER_VERSION - `date`" >AS-BUILT-VERSION
 
 if [[ $DOCKER_FILE ]];then
-  docker build . -t $DOCKER_PKG:$DOCKER_VERSION -f $DOCKER_FILE
+  docker-buildx build --platform=linux/amd64 . -t $DOCKER_PKG:$DOCKER_VERSION -f $DOCKER_FILE
 else
-  docker build . -t $DOCKER_PKG:$DOCKER_VERSION
+  docker-buildx build --platform=linux/amd64 . -t $DOCKER_PKG:$DOCKER_VERSION
 fi
 
 docker tag $DOCKER_PKG:$DOCKER_VERSION $DOCKER_REGISTRY/$DOCKER_PKG:$DOCKER_VERSION

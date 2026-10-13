@@ -15,6 +15,7 @@ alias tmux="tmux -2"
 alias grep="grep --color"
 alias g="git"
 alias vim="nvim"
+alias code="claude"
 alias vi="nvim"
 alias ffind="ag -g"
 alias f="ranger"
@@ -79,12 +80,17 @@ set -o vi
 #   docker inspect --format '{{ .NetworkSettings.IPAddress }}' "$@"
 # }
 
-# SSH keychain
-if [[ "$OSTYPE" == "darwin"* ]]; then
-  eval `keychain --eval --agents ssh --inherit any id_rsa`
-else
-  eval `keychain --eval --agents ssh id_rsa`
+# SSH keychain - reuse existing agent or start new one
+if [ -z "$SSH_AUTH_SOCK" ] || ! ssh-add -l &>/dev/null; then
+  eval "$(ssh-agent -s)" > /dev/null 2>&1
+  ssh-add --apple-use-keychain ~/.ssh/id_rsa 2>/dev/null || ssh-add ~/.ssh/id_rsa
 fi
+
+#if [[ "$OSTYPE" == "darwin"* ]]; then
+#  eval `keychain --eval --agents ssh --inherit any id_rsa`
+#else
+#  eval `keychain --eval --agents ssh id_rsa`
+#fi
 
 # SSH AGENT
 SSH_ENV="$HOME/.ssh/environment"

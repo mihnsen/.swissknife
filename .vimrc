@@ -32,6 +32,7 @@ Plug 'wakatime/vim-wakatime'
 
 " Copilot
 Plug 'github/copilot.vim', { 'branch': 'release' }
+"Plug 'augmentcode/augment.vim'
 
 call plug#end()
 
@@ -197,7 +198,7 @@ set wildignore+=*/coverage/**
 set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem
 set wildignore+=*.psd,*.png,*.jpg,*.gif,*.jpeg
 set wildignore+=*.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz
-set wildignore+=*/vendor/gems/*,*/vendor/cache/*,*/.bundle/*,*/.sass-cache/*,*/kirki/*,*/dist/*,*/node_modules/*,*/bower_components/*,*/coverage/*
+set wildignore+=*/vendor/gems/*,*/vendor/cache/*,*/.bundle/*,*/.sass-cache/*,*/kirki/*,*/dist/*,*/node_modules/*,*/bower_components/*,*/coverage/*,*/CelebAMask-HQ/*
 set wildignore+=*.swp,*~,._*
 set wildignore+=*.min.js
 set wildignore+=*.pot,*.po,*.mo
@@ -238,7 +239,7 @@ if executable('ag')
   set grepprg=ag\ --nogroup\ --nocolor
 
   " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g "" --ignore={\*.psd,\*.jpg,\*.png,\*.jpeg,\*.gif,\*.eot,\*.eol,\*.ttf,\*.otf,\*.afm,\*.ffil,\*.fon,\*.pfm,\*.pfb,\*.woff,\*.svg,\*.std,\*.pro,\*.xsf,\*.zip,\*.tar.gz,\*.tar.bz2,\*.rar,\*.tar.xz} --ignore=package-lock.json --ignore=yarn.lock --ignore-dir=includes/cmb2 --ignore-dir=inc/cmb2 --ignore-dir=semantic --ignore-dir=node_modules --ignore-dir=bower_components --ignore-dir=dist --ignore-dir=vendor'
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g "" --ignore={\*.psd,\*.jpg,\*.png,\*.jpeg,\*.gif,\*.eot,\*.eol,\*.ttf,\*.otf,\*.afm,\*.ffil,\*.fon,\*.pfm,\*.pfb,\*.woff,\*.svg,\*.std,\*.pro,\*.xsf,\*.zip,\*.tar.gz,\*.tar.bz2,\*.rar,\*.tar.xz} --ignore=package-lock.json --ignore=yarn.lock --ignore-dir=includes/cmb2 --ignore-dir=inc/cmb2 --ignore-dir=semantic --ignore-dir=node_modules --ignore-dir=bower_components --ignore-dir=dist --ignore-dir=vendor --ignore-dir=CelebAMask-HQ'
 
   " ag is fast enough that CtrlP doesn't need to cache
   let g:ctrlp_use_caching = 0
@@ -368,7 +369,6 @@ augroup END
 
 " Typescript
 "nmap <C-c> :TsuGeterr<CR>
-
 
 " Load local vimrc, if any
 silent! source ~/.vimrc.local

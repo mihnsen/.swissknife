@@ -2,6 +2,7 @@
   # to be customized
   email = minhnt.hut@gmail.com
   name = mihnsen
+	signingkey = /Users/mihnsen/.ssh/id_rsa.pub
 
 [alias]
   a = add
@@ -44,3 +45,5 @@
 
 [push]
   default = nothing
+[gpg]
+	format = ssh

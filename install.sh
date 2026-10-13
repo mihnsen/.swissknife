@@ -23,10 +23,19 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     touch $HOME/.skhdrc
     ln -sf $DIR/.skhdrc $HOME/;
   fi
-  if hash spacebar 2>/dev/null; then
-    echo -e "\n\033[32mConfiguring spacebar\033[m";
-    touch $HOME/.spacebarrc
-    ln -sf $DIR/.spacebarrc $HOME/;
+  if [ -d "/Applications/Übersicht.app" ]; then
+    echo -e "\n\033[32mConfiguring simple-bar-lite\033[m";
+    SBL="$HOME/Library/Application Support/Übersicht/widgets/simple-bar-lite"
+    if [ ! -d "$SBL" ]; then
+      mkdir -p "$(dirname "$SBL")"
+      git clone https://github.com/Jean-Tinland/simple-bar-lite.git "$SBL"
+      git -C "$SBL" checkout f655c3f
+    fi
+    if git -C "$SBL" apply --check "$DIR/uebersicht/simple-bar-lite.patch" 2>/dev/null; then
+      git -C "$SBL" apply "$DIR/uebersicht/simple-bar-lite.patch"
+    else
+      echo "simple-bar-lite patch already applied or conflicts, skipping"
+    fi
   fi
 fi
 

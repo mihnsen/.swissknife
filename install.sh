@@ -36,6 +36,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     else
       echo "simple-bar-lite patch already applied or conflicts, skipping"
     fi
+    ln -sf "$DIR/uebersicht/claude-status.py" "$SBL/lib/scripts/claude-status.py"
   fi
 fi
 

@@ -8,7 +8,7 @@ index 0967ef4..b08eefa 100644
 +  "yabaiPath": "/opt/homebrew/bin/yabai"
 +}
 diff --git a/default-settings.json b/default-settings.json
-index 501d068..1838029 100644
+index 501d068..8101ada 100644
 --- a/default-settings.json
 +++ b/default-settings.json
 @@ -35,7 +35,7 @@
@@ -20,7 +20,7 @@ index 501d068..1838029 100644
      "barVerticalOffset": "0px",
      "barHorizontalOffset": "0px",
      "barInnerMargin": "3px",
-@@ -43,10 +43,10 @@
+@@ -43,15 +43,24 @@
      "barOpacity": "0.8",
      "spaceMargin": "0px 12px 0px 0px",
      "processWidth": "320px",
@@ -34,6 +34,154 @@ index 501d068..1838029 100644
      "fontSize": "11px",
      "shadow": "0 5px 10px rgba(0, 0, 0, 0.24)",
      "transitionEasing": "cubic-bezier(0.4, 0, 0.2, 1)"
+   },
+   "dataWidgets": {
++    "claude": {
++      "enabled": true,
++      "refreshFrequency": 2000,
++      "color": "currentColor",
++      "warnAt": 50,
++      "dangerAt": 80,
++      "onClickCommand": null,
++      "refreshOnClick": true
++    },
+     "battery": {
+       "enabled": true,
+       "refreshFrequency": 10000,
+diff --git a/lib/components/claude.jsx b/lib/components/claude.jsx
+new file mode 100644
+index 0000000..ed3cfbe
+--- /dev/null
++++ b/lib/components/claude.jsx
+@@ -0,0 +1,89 @@
++import * as Uebersicht from 'uebersicht'
++import * as Settings from '../services/settings'
++import * as Json from '../services/json'
++import * as Output from '../services/output'
++import * as ClassNames from '../services/classnames'
++import Widget from './widget.jsx'
++import useWidgetRefresh from '../hooks/use-widget-refresh'
++
++const settings = Settings.get()
++const { claude } = settings.dataWidgets
++const { color, onClickCommand, refreshOnClick, refreshFrequency, warnAt, dangerAt } = claude
++
++const command = '/usr/bin/python3 simple-bar-lite/lib/scripts/claude-status.py'
++
++const formatElapsed = (seconds) => {
++  if (seconds == null) return ''
++  if (seconds < 60) return `${seconds}s`
++  if (seconds < 3600) return `${Math.floor(seconds / 60)}m${String(seconds % 60).padStart(2, '0')}s`
++  return `${Math.floor(seconds / 3600)}h${String(Math.floor((seconds % 3600) / 60)).padStart(2, '0')}m`
++}
++
++const formatReset = (iso) => {
++  if (!iso) return ''
++  const minutes = Math.max(0, Math.round((new Date(iso) - Date.now()) / 60000))
++  if (minutes < 60) return `${minutes}m`
++  if (minutes < 1440) return `${Math.floor(minutes / 60)}h${String(minutes % 60).padStart(2, '0')}m`
++  return `${Math.floor(minutes / 1440)}d${Math.floor((minutes % 1440) / 60)}h`
++}
++
++const Usage = ({ name, value }) => {
++  if (!value) return null
++  const classes = ClassNames.build('spl-claude__usage', {
++    'spl-claude__usage--warn': value.pct >= warnAt && value.pct < dangerAt,
++    'spl-claude__usage--danger': value.pct >= dangerAt
++  })
++  return (
++    <span className={classes}>
++      {name} {value.pct}%
++    </span>
++  )
++}
++
++const Claude = () => {
++  const [output, setOutput] = Uebersicht.React.useState()
++
++  const getClaude = async () => {
++    const json = Json.parse(Output.cleanup(await Uebersicht.run(command)))
++    if (json) setOutput(json)
++  }
++
++  useWidgetRefresh(getClaude, refreshFrequency)
++
++  if (!output) return null
++
++  const { active, others, usage, stale } = output
++  const classes = ClassNames.build('spl-claude', {
++    'spl-claude--permission': active && active.state === 'permission',
++    'spl-claude--stale': stale
++  })
++  const title = usage
++    ? `5h resets in ${formatReset(usage.five.resetsAt)} · 7d resets in ${formatReset(usage.seven.resetsAt)}`
++    : ''
++
++  return (
++    <Widget
++      className={classes}
++      getter={getClaude}
++      onClickCommand={onClickCommand}
++      refreshOnClick={refreshOnClick}
++      style={{ color }}
++    >
++      <span className="spl-claude__icon">✻</span>
++      {active && (
++        <span className="spl-claude__activity">
++          {active.label} {formatElapsed(active.elapsed)}
++          {others > 0 && ` +${others}`}
++        </span>
++      )}
++      {usage && (
++        <span className="spl-claude__usages" title={title}>
++          <Usage name="5h" value={usage.five} />
++          <Usage name="7d" value={usage.seven} />
++        </span>
++      )}
++    </Widget>
++  )
++}
++
++export default Claude
+diff --git a/lib/styles/components/claude.css b/lib/styles/components/claude.css
+new file mode 100644
+index 0000000..65fa829
+--- /dev/null
++++ b/lib/styles/components/claude.css
+@@ -0,0 +1,33 @@
++.spl-claude {
++  display: flex;
++  align-items: center;
++}
++
++.spl-claude__icon {
++  margin-right: 5px;
++  color: var(--spl-orange);
++}
++
++.spl-claude__activity {
++  margin-right: 6px;
++}
++
++.spl-claude--permission .spl-claude__activity {
++  color: var(--spl-orange);
++}
++
++.spl-claude__usage + .spl-claude__usage {
++  margin-left: 5px;
++}
++
++.spl-claude__usage--warn {
++  color: var(--spl-yellow);
++}
++
++.spl-claude__usage--danger {
++  color: var(--spl-red);
++}
++
++.spl-claude--stale .spl-claude__usages {
++  opacity: 0.5;
++}
 diff --git a/lib/styles/components/space.css b/lib/styles/components/space.css
 index da628c9..c623a78 100644
 --- a/lib/styles/components/space.css
@@ -72,3 +220,44 @@ index ed38006..da42f51 100644
    font-family: var(--spl-font-family);
    border-radius: var(--spl-bar-radius);
    box-sizing: border-box;
+diff --git a/lib/styles/index.css b/lib/styles/index.css
+index 98f8940..2df95f5 100644
+--- a/lib/styles/index.css
++++ b/lib/styles/index.css
+@@ -1,6 +1,7 @@
+ @import './core/base.css';
+ 
+ @import './components/battery.css';
++@import './components/claude.css';
+ @import './components/date-time.css';
+ @import './components/network.css';
+ @import './components/process.css';
+diff --git a/main.jsx b/main.jsx
+index fcba8b0..10eb32b 100644
+--- a/main.jsx
++++ b/main.jsx
+@@ -2,6 +2,7 @@ import Space from './lib/components/space.jsx'
+ import Process from './lib/components/process.jsx'
+ import CustomWidgets from './lib/components/custom-widgets.jsx'
+ import Battery from './lib/components/battery.jsx'
++import Claude from './lib/components/claude.jsx'
+ import Sound from './lib/components/sound.jsx'
+ import DateTime from './lib/components/date-time.jsx'
+ import Network from './lib/components/network.jsx'
+@@ -16,7 +17,7 @@ const refreshFrequency = false
+ 
+ const settings = Settings.get()
+ const { yabaiPath, shell, dataWidgets } = settings
+-const { battery, dateTime, network, output: soundOutput, input: soundInput } = dataWidgets
++const { battery, claude, dateTime, network, output: soundOutput, input: soundInput } = dataWidgets
+ 
+ const command = `${shell} simple-bar-lite/lib/scripts/init.sh ${yabaiPath}`
+ 
+@@ -47,6 +48,7 @@ const render = ({ output, error }) => {
+       <Process currentWindow={currentWindow} />
+       <div className="spl-bar__data">
+         <CustomWidgets />
++        {claude.enabled && <Claude />}
+         {network.enabled && <Network />}
+         {soundOutput.enabled && <Sound kind="output" />}
+         {soundInput.enabled && <Sound kind="input" />}
